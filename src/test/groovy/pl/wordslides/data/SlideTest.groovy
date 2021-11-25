@@ -10,7 +10,7 @@ class SlideTest extends Specification {
         when:
         def result = new Slide([])
         then:
-        result.size() == 0
+        result.getWords().size() == 0
         result.key() == ""
     }
 
@@ -21,7 +21,7 @@ class SlideTest extends Specification {
         def word3 = new Word("test3")
         def result = new Slide([word1, word2, word3])
         then:
-        result.size() == 3
+        result.getWords().size()  == 3
         result.key() == "test1 test2 test3"
     }
 
