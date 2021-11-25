@@ -4,5 +4,5 @@ import java.util.Map;
 
 public interface IWordSlide {
 
-    Map<String, Integer> search(String input);
+    Map<String, Long> search(String input);
 }

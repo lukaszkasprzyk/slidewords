@@ -1,11 +1,11 @@
-package pl.wordslides.services.impl
+package pl.wordslides.services
 
-import io.vavr.collection.List
+import pl.wordslides.data.Slide
 import pl.wordslides.data.Word
-import pl.wordslides.services.PhraseSplitter
-import pl.wordslides.services.SlideCreator
 import spock.lang.Specification
 import spock.lang.Unroll
+
+import java.util.stream.Collectors
 
 @Unroll
 class SlideCreatorImplTest extends Specification {
@@ -16,7 +16,7 @@ class SlideCreatorImplTest extends Specification {
         expect:
         def slides = underTest.create(cW(""), depth)
         slides.size() == expectedSize
-        slides.map { slide -> slide.key() }.toJavaArray() == expectedKeys
+        toSlideKeys(slides) == expectedKeys
         where:
         depth || expectedSize || expectedKeys
         0     || 0            || []
@@ -26,7 +26,7 @@ class SlideCreatorImplTest extends Specification {
         expect:
         def slides = underTest.create(cW(null), depth)
         slides.size() == expectedSize
-        slides.map { slide -> slide.key() }.toJavaArray() == expectedKeys
+        toSlideKeys(slides) == expectedKeys
         where:
         depth || expectedSize || expectedKeys
         0     || 0            || []
@@ -36,7 +36,7 @@ class SlideCreatorImplTest extends Specification {
         expect:
         def slides = underTest.create(cW("input"), depth)
         slides.size() == expectedSize
-        slides.map { slide -> slide.key() }.toJavaArray() == expectedKeys
+        toSlideKeys(slides) == expectedKeys
         where:
         depth || expectedSize || expectedKeys
         2     || 0            || []
@@ -47,7 +47,7 @@ class SlideCreatorImplTest extends Specification {
         expect:
         def slides = underTest.create(cW("input"), depth)
         slides.size() == expectedSize
-        slides.map { slide -> slide.key() }.toJavaArray() == expectedKeys
+        toSlideKeys(slides) == expectedKeys
         where:
         depth || expectedSize || expectedKeys
         0     || 1            || ["input"]
@@ -57,18 +57,18 @@ class SlideCreatorImplTest extends Specification {
         expect:
         def slides = underTest.create(cW("input input"), depth)
         slides.size() == expectedSize
-        slides.map { slide -> slide.key() }.toJavaArray() == expectedKeys
+        toSlideKeys(slides) == expectedKeys
         where:
         depth || expectedSize || expectedKeys
-        // 0     || 1            || ["input input"]
-        1     || 1            || ["input"]
+        0     || 1            || ["input"]
+        1     || 0            || []
     }
 
     def "two different words"() {
         expect:
         def slides = underTest.create(cW("input text"), depth)
         slides.size() == expectedSize
-        slides.map { slide -> slide.key() }.toJavaArray() == expectedKeys
+        toSlideKeys(slides) == expectedKeys
         where:
         depth || expectedSize || expectedKeys
         0     || 1            || ["input text"]
@@ -80,7 +80,7 @@ class SlideCreatorImplTest extends Specification {
         expect:
         def slides = underTest.create(cW(input), depth)
         slides.size() == expectedSize
-        slides.map { slide -> slide.key() }.toJavaArray() == expectedKeys
+        toSlideKeys(slides) == expectedKeys
         where:
         input                  | depth || expectedSize || expectedKeys
         "input text size test" | 3     || 4            || ["input", "text", "size", "test"]
@@ -93,13 +93,17 @@ class SlideCreatorImplTest extends Specification {
         expect:
         def slides = underTest.create(cW(" Mary went Mary's\ngone "), depth)
         slides.size() == expectedSize
-        slides.map { slide -> slide.key() }.toJavaArray() == expectedKeys
+        toSlideKeys(slides) == expectedKeys
         where:
         depth || expectedSize || expectedKeys
         0     || 1            || ["Mary went Mary's gone"]
         1     || 2            || ["Mary went Mary's", "went Mary's gone"]
         2     || 3            || ["Mary went", "went Mary's", "Mary's gone"]
         3     || 4            || ["Mary", "went", "Mary's", "gone"]
+    }
+
+    private List<String> toSlideKeys(List<Slide> slides) {
+        slides.stream().map { slide -> slide.key() }.collect(Collectors.toList())
     }
 
     private static List<Word> cW(String input) {

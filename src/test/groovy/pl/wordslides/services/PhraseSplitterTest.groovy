@@ -1,14 +1,21 @@
 package pl.wordslides.services
 
-import spock.lang.Specification
 
+import spock.lang.Specification
+import spock.lang.Unroll
+
+import java.util.stream.Collectors
+
+@Unroll
 class PhraseSplitterTest extends Specification {
 
     PhraseSplitter underTest = new PhraseSplitter()
 
-    def "input string words are #result"() {
+    def "input #input have words #result"() {
+        def words = underTest.getWords(input)
+        def array = words.stream().map { word -> word.getValue() }.collect(Collectors.toList())
         expect:
-        underTest.getWords(input).map { word -> word.getValue() }.toJavaArray() == result
+        array == result
 
         where:
         input                       || result

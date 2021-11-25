@@ -15,5 +15,5 @@ public class WordEntity {
 
     @Id
     private String key;
-    private Integer count;
+    private Long count;
 }

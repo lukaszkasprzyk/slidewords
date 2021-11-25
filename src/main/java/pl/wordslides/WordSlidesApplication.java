@@ -9,6 +9,7 @@ import pl.wordslides.store.WordEntity;
 import pl.wordslides.store.WordRepository;
 
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 @SpringBootApplication
 @Slf4j
@@ -22,16 +23,18 @@ public class WordSlidesApplication {
     public CommandLineRunner demo(WordRepository repository) {
         return (args) -> {
             // save a few words
-            repository.save(new WordEntity("Mary", 1));
-            repository.save(new WordEntity("Mary gone", 2));
-            repository.save(new WordEntity("Mary's gone", 3));
-            repository.save(new WordEntity("went Mary's", 4));
-            repository.save(new WordEntity("went", 5));
-            repository.save(new WordEntity("input", 3));
+            repository.save(new WordEntity("Mary", 1l));
+            repository.save(new WordEntity("Mary gone", 2l));
+            repository.save(new WordEntity("Mary's gone", 3l));
+            repository.save(new WordEntity("went Mary's", 4l));
+            repository.save(new WordEntity("went", 5l));
+            repository.save(new WordEntity("input", 6l));
 
-
+            IntStream.rangeClosed(1, 100).asLongStream().forEach(value ->
+                    repository.save(new WordEntity("test" + value, value))
+            );
             // fetch all words
-            log.info("Customers found with findAll():");
+            log.info("Words found with findAll():");
             log.info("-------------------------------");
             for (WordEntity words : repository.findAll()) {
                 log.info(words.toString());

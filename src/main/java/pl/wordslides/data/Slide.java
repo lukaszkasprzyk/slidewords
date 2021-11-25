@@ -1,7 +1,10 @@
 package pl.wordslides.data;
 
-import io.vavr.collection.List;
+
 import lombok.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @EqualsAndHashCode
@@ -13,10 +16,10 @@ public class Slide {
     private final List<Word> words;
 
     public int size() {
-        return words.length();
+        return words.size();
     }
 
     public String key() {
-        return this.words.map(Word::getValue).mkString(" ");
+        return this.words.stream().map(Word::getValue).collect(Collectors.joining(" "));
     }
 }

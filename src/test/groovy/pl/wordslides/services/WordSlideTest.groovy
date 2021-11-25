@@ -1,12 +1,8 @@
-package pl.wordslides.services.impl
+package pl.wordslides.services
 
-import io.vavr.collection.List
-import pl.wordslides.store.WordEntity
 import pl.wordslides.data.Slide
 import pl.wordslides.data.Word
-import pl.wordslides.services.IWordSlide
-import pl.wordslides.services.PhraseSplitter
-import pl.wordslides.services.SlideCreator
+import pl.wordslides.store.WordEntity
 import pl.wordslides.store.WordRepository
 import spock.lang.Specification
 
@@ -25,7 +21,7 @@ class WordSlideTest extends Specification {
     def "for empty input empty result"() {
         def searchPhrase = ""
         given:
-        phraseSplitter.getWords(searchPhrase) >> List.empty()
+        phraseSplitter.getWords(searchPhrase) >> []
         when:
         def result = underTest.search(searchPhrase)
         then:

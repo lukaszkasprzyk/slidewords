@@ -1,20 +1,20 @@
-package pl.wordslides.services.impl;
+package pl.wordslides.services;
 
-import io.vavr.collection.List;
+
 import org.springframework.stereotype.Service;
 import pl.wordslides.data.Slide;
 import pl.wordslides.data.Word;
-import pl.wordslides.services.SlideCreator;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 public class SlideCreatorImpl implements SlideCreator {
 
     public List<Slide> create(List<Word> words, int depth) {
         if (isAnythingToSplit(words, depth)) {
-            return List.empty();
+            return Collections.emptyList();
         } else if (depth == 0) {
             return List.of(new Slide(words));
         } else {
@@ -24,16 +24,16 @@ public class SlideCreatorImpl implements SlideCreator {
     }
 
     private List<Slide> extract(List<Word> words, int sliceSize) {
-        Set<Slide> slides = new LinkedHashSet<>();
+        List<Slide> slides = new ArrayList<>();
         for (int padFromLeft = 0; padFromLeft <= words.size() - sliceSize; padFromLeft++) {
             Slide subSlide = extractSingleSlide(words, sliceSize, padFromLeft);
             slides.add(subSlide);
         }
-        return List.ofAll(slides);
+        return slides;
     }
 
     private Slide extractSingleSlide(List<Word> words, int sliceSize, int padFromLeft) {
-        final List<Word> slice = words.subSequence(padFromLeft, sliceSize + padFromLeft);
+        final List<Word> slice = words.subList(padFromLeft, sliceSize + padFromLeft);
         return new Slide(slice);
     }
 

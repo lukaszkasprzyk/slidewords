@@ -15,7 +15,7 @@ public class SearchController {
     private final IWordSlide wordSlide;
 
     @GetMapping("/words/{input}")
-    public Map<String, Integer> doSearch(@PathVariable String input) {
+    public Map<String, Long> doSearch(@PathVariable String input) {
         return wordSlide.search(input);
     }
 }

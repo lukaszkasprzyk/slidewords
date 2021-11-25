@@ -1,8 +1,10 @@
 package pl.wordslides.services;
 
-import io.vavr.collection.List;
+
 import pl.wordslides.data.Slide;
 import pl.wordslides.data.Word;
+
+import java.util.List;
 
 public interface SlideCreator {
 
