@@ -6,8 +6,8 @@ It tries to find best matches according to following algorithm.
 * For every single slide it looks into database for that phrase.
 * Longer phrases fits better than short ones.
 
-I.e 
-Input phrase: "Mary gone"
-It creates two slides: 1. one phrase: "Mary gone", 2. two phrases: "Mary", "Gone"
-On database we have only "Mary" and "Mary gone".
-Result should be "Mary gone" as best match.
+Example 
+* Input phrase: "Mary gone"
+* It creates two slides: 1. one phrase: "Mary gone", 2. two phrases: "Mary", "Gone"
+* On database we have only "Mary" and "Mary gone".
+* Result should be "Mary gone" as best match.
